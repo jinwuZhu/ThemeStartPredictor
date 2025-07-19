@@ -38,22 +38,19 @@ pip install -r requirements.txt
 
 <table border="1">
   <tr>
-    <th>模型名称</th><th>引用代码</th><th>下载</th>
+    <th>模型名称</th><th>引用代码</th>
   </tr>
   <tr>
-    <td>theme_full</td>
+    <td><a href="https://pan.baidu.com/s/1WlwssGR7_Wmzt3ub_pdRcw?pwd=vqjr">theme_full</a></td>
     <td><b>ThemeStartPredictor("google-bert/bert-base-chinese",hidden_size=768)</b></td>
-    <td><a href="https://pan.baidu.com/s/1WlwssGR7_Wmzt3ub_pdRcw?pwd=vqjr">下载</a></td>
   </tr>
   <tr>
-    <td>theme_min_hz768l2h4_512_distilled</td>
+    <td><a href="https://pan.baidu.com/s/18a0RnlcXlSWGNoiWSkv1GA?pwd=2jja">theme_min_hz768l2h4_512_distilled</a></td>
     <td><b>MiniThemeStartPredictor()</b></td>
-    <td><a href="https://pan.baidu.com/s/18a0RnlcXlSWGNoiWSkv1GA?pwd=2jja">下载</a></td>
   </tr>
   <tr>
-    <td>theme_min_hz128l8h4_1024</td>
+    <td><a href="https://pan.baidu.com/s/1aZLafMryLWYpPP8_x2o7ag?pwd=6emv">theme_min_hz128l8h4_1024</a></td>
     <td><b>MiniThemeStartPredictor(hidden_size=128,num_layers=8,num_heads=4,max_len=1024)</b></td>
-    <td><a href="https://pan.baidu.com/s/1aZLafMryLWYpPP8_x2o7ag?pwd=6emv">下载</a></td>
   </tr>
 </table>
 
