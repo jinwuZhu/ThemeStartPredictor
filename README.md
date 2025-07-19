@@ -1,11 +1,16 @@
 # ThemeStartPredictor
 基于 BERT 的自然语言处理模型，用于主题内容起始位置预测模型。
 
-<table style="background-color: #fff;">
+<table border="1">
   <tr>
     <td><img src="demo.png" width="256px"></td>
     <td><img src="right.png" width="100px"></td>
     <td><img src="demo_dst.png" width="256px"></td>
+  </tr>
+  <tr>
+    <td><img src="src.jpg" width="256px"></td>
+    <td><img src="right.png" width="100px"></td>
+    <td><img src="dst.jpg" width="256px"></td>
   </tr>
 </table>
 
