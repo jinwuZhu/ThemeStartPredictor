@@ -6,8 +6,8 @@ from torch.utils.data import DataLoader
 from transformers import AutoTokenizer
 
 from config import BERT_PRETRAINED_MODEL_NAME, HUGGINGFACE_CACHEDIR, TOKEN_MAX_LENGTH
-from dataset import ThemeStartDataset
-from models import ThemeStartPredictor
+from dataset import ThemeDataset
+from models import ThemeStartPredictor as ThemeStartPredictorModel
 from utils import load_texts_by_folder
 
 def main(args):
@@ -23,11 +23,11 @@ def main(args):
 
     # 加载训练数据
     train_seqs = load_texts_by_folder("./data/train", endswidth=".md")
-    dataset = ThemeStartDataset(train_seqs, tokenizer, max_length=max_length)
+    dataset = ThemeDataset(train_seqs, tokenizer, max_length=max_length)
     dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
 
     # 模型初始化
-    model = ThemeStartPredictor().to(device)
+    model = ThemeStartPredictorModel().to(device)
     if args.resume and os.path.exists(args.save_path):
         model.load_state_dict(torch.load(args.save_path))
         print(f"✅ 成功加载模型: {args.save_path}")

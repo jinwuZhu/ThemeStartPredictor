@@ -41,6 +41,31 @@ class ThemeStartPredictor(nn.Module):
         return predicted_start_index, logits  # 返回 logits 以便训练时用 CrossEntropyLoss
 
 
+from mini_bert import MiniBERT  # 替代 HuggingFace 的 BERT
+
+class MiniThemeStartPredictor(nn.Module):
+    def __init__(self, hidden_size=768,num_layers=2,num_heads=4,max_len=512,**kwargs):
+        super(MiniThemeStartPredictor, self).__init__()
+        self.bert = MiniBERT(
+            vocab_size=30522,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            num_heads=num_heads,
+            ff_size=512,
+            max_len=max_len
+        )
+        self.linear = ThemeStartLiner(hidden_size)
+        self.softmax = nn.Softmax(dim=1)
+
+    def forward(self, input_ids, attention_mask):
+        last_hidden_state, _ = self.bert(input_ids, attention_mask)  # (batch, seq_len, hidden)
+        logits = self.linear(last_hidden_state).squeeze(-1)           # (batch, seq_len)
+        probs = self.softmax(logits)
+        predicted_start_index = torch.argmax(probs, dim=1)
+        return predicted_start_index, logits
+
+
+
 if __name__ == '__main__':
     model = ThemeStartPredictor()
     print(model)

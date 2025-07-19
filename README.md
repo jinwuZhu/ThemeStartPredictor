@@ -1,50 +1,70 @@
 # ThemeStartPredictor
-基于 BERT 的主题起始位置预测模型，用于从文本中判断主要内容的开始位置（字符级索引）。该项目适用于 Markdown 文章等内容结构清晰的文本，可用于摘要、分段或内容识别任务。
+基于 BERT 的自然语言处理模型，用于主题内容起始位置预测模型。
 
-## 功能简介
+<table style="background-color: #fff;">
+  <tr>
+    <td><img src="demo.png" width="256px"></td>
+    <td><img src="right.png" width="100px"></td>
+    <td><img src="demo_dst.png" width="256px"></td>
+  </tr>
+</table>
 
-- 返回预测的主题起始字符位置，并显示片段内容
-- **目前最大支持token长度512**
+### 特性
 
-## 项目结构
+- 有轻量蒸馏版和完整版模型。
+- 无论是哪个版本运行速度都非常快适用于本地运行，比如对于网页爬虫或集成到WebSerach MCP增强结构，去除的无用信息，从而提高模型运行速度。
 
-```
-.
-├── config.py                 # 预训练模型路径配置等常量
-├── train.py                 # 训练主程序，支持命令行参数
-├── inference.py             # 推理脚本，支持输入文本或文本文件
-├── dataset.py               # 自定义 Dataset 构建逻辑
-├── models.py                # 模型结构定义（基于 BERT）
-├── utils.py                 # 文本读取等辅助函数
-├── data/
-│   ├── train/               # 训练用 Markdown 文本
-│   └── test/                # 测试用 Markdown 文本
-└── weights/                 # 模型保存目录
-```
+### 支持的功能
 
-## 安装依赖
+- 从一篇文本中，找出主题起始位置（比如校长或领导超长演讲稿，前面一大段废话）。
+- 目前最大支持文本长度512 tokens
 
-建议使用 Python 3.9+，先创建虚拟环境，然后安装：
+### 安装依赖
 
-**注意：** 默认的依赖是torch+cuda12.8 可能需要依据实际情况修改，如：或者直接使用cpu版本，具体可以参考torch官网
+建议使用 Python 3.11+，先创建虚拟环境，然后安装：
+
+**注意：** 默认的依赖是torch+cuda12.8 可能需要依据实际情况修改, 具体可以参考torch官网
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## 推理使用（`inference.py`）
+### 模型下载
+
+<table border="1">
+  <tr>
+    <th>模型名称</th><th>引用代码</th><th>下载</th>
+  </tr>
+  <tr>
+    <td>theme_full</td>
+    <td><b>ThemeStartPredictor("google-bert/bert-base-chinese",hidden_size=768)</b></td>
+    <td><a href="https://pan.baidu.com/s/1WlwssGR7_Wmzt3ub_pdRcw?pwd=vqjr">下载</a></td>
+  </tr>
+  <tr>
+    <td>theme_min_hz768l2h4_512_distilled</td>
+    <td><b>MiniThemeStartPredictor()</b></td>
+    <td><a href="https://pan.baidu.com/s/18a0RnlcXlSWGNoiWSkv1GA?pwd=2jja">下载</a></td>
+  </tr>
+  <tr>
+    <td>theme_min_hz128l8h4_1024</td>
+    <td><b>MiniThemeStartPredictor(hidden_size=128,num_layers=8,num_heads=4,max_len=1024)</b></td>
+    <td><a href="https://pan.baidu.com/s/1aZLafMryLWYpPP8_x2o7ag?pwd=6emv">下载</a></td>
+  </tr>
+</table>
+
+### 推理使用（`inference.py`）
 
 在使用前，你需要先训练模型权重，或下载预训练的 [模型权重](https://pan.baidu.com/s/13H9UkYQhS7r7kKhP0YB0uA?pwd=6atc)
 
-### 方式一：输入文本字符串
+1. 方式一：输入文本字符串
 
 ```bash
 python inference.py \
   --model_path weights/theme_start_model.pt \
-  --text "这是文章的开头部分。模型应该找出主要内容从哪里开始。"
+  --text "大家好，很荣幸我这位校长参加班级的换座位大会。叽里呱啦叽里呱啦。现在，请大家按照指示换位置: 小红：第一排第二列"
 ```
 
-### 方式二：读取文件内容进行预测
+2. 方式二：读取文件内容进行预测
 
 ```bash
 python inference.py \
@@ -52,24 +72,26 @@ python inference.py \
   --file ./data/test/sample1.md
 ```
 
-### 示例输出
+3. 示例输出
 
 ```
-📍 预测字符起始位置: 18
+📍 预测字符起始位置: 54
 📎 预测片段:
-本文主要介绍如何使用 BERT 模型完成文本主体提取任务。
+小红：第一排第二列...
 ```
 
-## 训练模型（`train.py`）
+### 训练模型（）
 
-支持以下参数：
+本项目包含训练脚本 `train.py` 支持以下参数：
 
-* `--max_batches`：训练总批次数（如：100）
-* `--batch_size`：每批样本数量（如：4）
-* `--save_path`：保存模型的路径（如：weights/model.pt）
-* `--resume`：是否加载已有模型继续训练
+```
+--max_batches ：训练总批次数（如：100）
+--batch_size：每批样本数量（如：4）
+--save_path：保存模型的路径（如：weights/model.pt）
+--resume：是否加载已有模型继续训练
+```
 
-### 示例命令：
+1. 示例命令：
 
 ```bash
 python train.py \
@@ -78,7 +100,7 @@ python train.py \
   --save_path weights/theme_start_model.pt
 ```
 
-### 继续训练：
+2. 继续训练：
 
 ```bash
 python train.py \
@@ -88,10 +110,10 @@ python train.py \
   --resume
 ```
 
-## 数据格式说明
+3. 数据格式说明
 
 * 每个 `.md` 文件表示一条训练数据
-* 文本中需包含 `<ai-theme>` 标签，表示模型需要学习预测的起始位置
+* 文本中需包含 `<ai-theme>` 和  `</ai-theme>`标签对，表示模型需要学习预测的起始位置和结束位置
 * 示例：
 
 ```markdown
