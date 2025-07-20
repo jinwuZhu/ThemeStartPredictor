@@ -31,7 +31,7 @@
 **注意：** 默认的依赖是torch+cuda12.8 可能需要依据实际情况修改, 具体可以参考torch官网
 
 ```bash
-pip install -r requirements.txt
+uv sync
 ```
 
 ### 模型下载
