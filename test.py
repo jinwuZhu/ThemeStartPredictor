@@ -9,7 +9,7 @@ from utils import load_texts_by_folder
 def main():
     max_length = TOKEN_MAX_LENGTH
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model_path = "./weights/theme_start_min_distilled.pt"
+    model_path = "./weights/theme_min_hz768l2h4_512.pt"
     test_text = load_texts_by_folder("./data/demo",endswidth=".md")[0]
     # 初始化 tokenizer
     tokenizer = AutoTokenizer.from_pretrained(BERT_PRETRAINED_MODEL_NAME, cache_dir=HUGGINGFACE_CACHEDIR)
